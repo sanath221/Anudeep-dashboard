@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import List, Optional
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +27,14 @@ def load_env_file(env_path: Path) -> None:
 load_env_file(ENV_FILE)
 
 
+def env_list(name: str, default: Optional[List[str]] = None) -> List[str]:
+    raw_value = os.environ.get(name, "")
+    if not raw_value:
+        return default or []
+
+    return [item.strip() for item in raw_value.split(",") if item.strip()]
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -33,9 +42,17 @@ load_env_file(ENV_FILE)
 SECRET_KEY = 'django-insecure-v%5eg^z=h9#(s$o6-b4j45uw!xtc-4!8(20qpxusl#gl28q076'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True").strip().lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env_list(
+    "DJANGO_ALLOWED_HOSTS",
+    [
+        "127.0.0.1",
+        "localhost",
+        "anudeep-dashboard.vercel.app",
+        ".vercel.app",
+    ],
+)
 
 
 # Application definition
