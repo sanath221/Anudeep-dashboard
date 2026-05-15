@@ -171,6 +171,19 @@
             transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
         }
 
+        .submission-response {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .response-text {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
         .filter-link:hover {
             transform: translateY(-1px);
             border-color: rgba(179, 86, 60, 0.35);
@@ -195,6 +208,11 @@
         .pill-not-attending {
             background: rgba(166, 61, 64, 0.12);
             color: var(--danger);
+        }
+
+        .pill-tentative {
+            background: rgba(179, 86, 60, 0.12);
+            color: var(--accent);
         }
 
         .pill-unknown {
@@ -236,23 +254,120 @@
         {% if error_message %}
             <div class="error">{{ error_message }}</div>
         {% elif dashboard %}
-            <section class="cards">
-                <article class="card">
-                    <p class="card-label">Total Submissions</p>
-                    <p class="card-value accent">{{ dashboard.total_submissions }}</p>
-                </article>
-                <article class="card">
-                    <p class="card-label">Attending</p>
-                    <p class="card-value success">{{ dashboard.attending_count }}</p>
-                </article>
-                <article class="card">
-                    <p class="card-label">Not Attending</p>
-                    <p class="card-value danger">{{ dashboard.not_attending_count }}</p>
-                </article>
-                <article class="card">
-                    <p class="card-label">Unknown</p>
-                    <p class="card-value">{{ dashboard.unknown_count }}</p>
-                </article>
+            {% if dashboard.question_summary %}
+                {% for question, counts in dashboard.question_summary.items %}
+                    {% if "haldi" in question|lower %}
+                    <section class="cards" style="margin-top: 28px;">
+                        <p style="margin: 0 0 14px; font-size: 1.15rem; font-weight: 700; color: var(--accent); width: 100%; grid-column: 1/-1;">{{ question }}</p>
+                        <article class="card">
+                            <p class="card-label">Attending</p>
+                            <p class="card-value success">{{ counts.attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Not Attending</p>
+                            <p class="card-value danger">{{ counts.not_attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Tentative</p>
+                            <p class="card-value">{{ counts.tentative }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Unknown</p>
+                            <p class="card-value">{{ counts.unknown }}</p>
+                        </article>
+                    </section>
+                    {% elif "mehandi" in question|lower or "mehendi" in question|lower %}
+                    <section class="cards" style="margin-top: 28px;">
+                        <p style="margin: 0 0 14px; font-size: 1.15rem; font-weight: 700; color: var(--accent); width: 100%; grid-column: 1/-1;">{{ question }}</p>
+                        <article class="card">
+                            <p class="card-label">Attending</p>
+                            <p class="card-value success">{{ counts.attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Not Attending</p>
+                            <p class="card-value danger">{{ counts.not_attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Tentative</p>
+                            <p class="card-value">{{ counts.tentative }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Unknown</p>
+                            <p class="card-value">{{ counts.unknown }}</p>
+                        </article>
+                    </section>
+                    {% elif "pelli" in question|lower %}
+                    <section class="cards" style="margin-top: 28px;">
+                        <p style="margin: 0 0 14px; font-size: 1.15rem; font-weight: 700; color: var(--accent); width: 100%; grid-column: 1/-1;">{{ question }}</p>
+                        <article class="card">
+                            <p class="card-label">Attending</p>
+                            <p class="card-value success">{{ counts.attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Not Attending</p>
+                            <p class="card-value danger">{{ counts.not_attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Tentative</p>
+                            <p class="card-value">{{ counts.tentative }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Unknown</p>
+                            <p class="card-value">{{ counts.unknown }}</p>
+                        </article>
+                    </section>
+                    {% elif "wedding" in question|lower %}
+                    <section class="cards" style="margin-top: 28px;">
+                        <p style="margin: 0 0 14px; font-size: 1.15rem; font-weight: 700; color: var(--accent); width: 100%; grid-column: 1/-1;">{{ question }}</p>
+                        <article class="card">
+                            <p class="card-label">Attending</p>
+                            <p class="card-value success">{{ counts.attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Not Attending</p>
+                            <p class="card-value danger">{{ counts.not_attending }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Tentative</p>
+                            <p class="card-value">{{ counts.tentative }}</p>
+                        </article>
+                        <article class="card">
+                            <p class="card-label">Unknown</p>
+                            <p class="card-value">{{ counts.unknown }}</p>
+                        </article>
+                    </section>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <section class="table-wrap">
+                <h2 class="section-title">Question summary</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Attending</th>
+                            <th>Not Attending</th>
+                            <th>Tentative</th>
+                            <th>Unknown</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for question, counts in dashboard.question_summary.items %}
+                            <tr>
+                                <td>{{ question }}</td>
+                                <td class="success">{{ counts.attending }}</td>
+                                <td class="danger">{{ counts.not_attending }}</td>
+                                <td>{{ counts.tentative }}</td>
+                                <td>{{ counts.unknown }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">No attendance questions were detected in the Jotform response data.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </section>
 
             <section class="table-wrap">
@@ -261,12 +376,14 @@
                     <a href="?" class="filter-link {% if selected_filter == 'all' %}active{% endif %}">All</a>
                     <a href="?status=attending" class="filter-link {% if selected_filter == 'attending' %}active{% endif %}">Attending</a>
                     <a href="?status=not-attending" class="filter-link {% if selected_filter == 'not-attending' %}active{% endif %}">Not Attending</a>
+                    <a href="?status=tentative" class="filter-link {% if selected_filter == 'tentative' %}active{% endif %}">Tentative</a>
                 </div>
                 <table>
                     <thead>
                         <tr>
                             <th>Guest</th>
                             <th>Attendance</th>
+                            <th>Responses</th>
                             <th>Submitted At</th>
                             <th>Submission Status</th>
                         </tr>
@@ -276,9 +393,19 @@
                             <tr>
                                 <td>{{ submission.guest_name }}</td>
                                 <td>
-                                    <span class="pill {% if submission.attendance_status == 'Attending' %}pill-attending{% elif submission.attendance_status == 'Not Attending' %}pill-not-attending{% else %}pill-unknown{% endif %}">
+                                    <span class="pill {% if submission.attendance_status == 'Attending' %}pill-attending{% elif submission.attendance_status == 'Not Attending' %}pill-not-attending{% elif submission.attendance_status == 'Tentative' %}pill-tentative{% else %}pill-unknown{% endif %}">
                                         {{ submission.attendance_status }}
                                     </span>
+                                </td>
+                                <td>
+                                    {% for answer in submission.attendance_answers %}
+                                        <div class="submission-response">
+                                            <span class="pill {% if answer.attendance_status == 'Attending' %}pill-attending{% elif answer.attendance_status == 'Not Attending' %}pill-not-attending{% elif answer.attendance_status == 'Tentative' %}pill-tentative{% else %}pill-unknown{% endif %}">
+                                                {{ answer.attendance_status }}
+                                            </span>
+                                            <span class="response-text">{{ answer.question_label }}</span>
+                                        </div>
+                                    {% endfor %}
                                 </td>
                                 <td>{{ submission.created_at }}</td>
                                 <td>{{ submission.status }}</td>
@@ -286,22 +413,30 @@
                         {% empty %}
                             {% if selected_filter == 'attending' %}
                                 <tr>
-                                    <td colspan="4">No attending guests matched this filter.</td>
+                                    <td colspan="5">No attending guests matched this filter.</td>
                                 </tr>
                             {% elif selected_filter == 'not-attending' %}
                                 <tr>
-                                    <td colspan="4">No not attending guests matched this filter.</td>
+                                    <td colspan="5">No not attending guests matched this filter.</td>
+                                </tr>
+                            {% elif selected_filter == 'tentative' %}
+                                <tr>
+                                    <td colspan="5">No tentative guests matched this filter.</td>
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="4">No submissions were returned from Jotform.</td>
+                                    <td colspan="5">No submissions were returned from Jotform.</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
             </section>
+
+
         {% endif %}
     </main>
+
+
 </body>
 </html>

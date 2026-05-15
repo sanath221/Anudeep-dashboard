@@ -1,13 +1,14 @@
 from requests import RequestException
 from django.shortcuts import render
 
-from .services import ATTENDING, NOT_ATTENDING, fetch_dashboard_data
+from .services import ATTENDING, NOT_ATTENDING, TENTATIVE, fetch_dashboard_data
 
 
 FILTER_OPTIONS = {
     "all": None,
     "attending": ATTENDING,
     "not-attending": NOT_ATTENDING,
+    "tentative": TENTATIVE,
 }
 
 
